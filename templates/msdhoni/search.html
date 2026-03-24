@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section style="margin-top: 1.8rem;">
+  <h2>Search results</h2>
+  <p style="color: var(--muted); margin-top: 0.5rem;">Showing results for "<strong>{{ query }}</strong>"</p>
+
+  {% if results %}
+  <div class="grid" style="margin-top: 1.5rem;">
+    {% for phone in results %}
+    <article class="card">
+      <div class="card__media">
+        <img src="{{ phone.image.url }}" alt="{{ phone.name }}">
+      </div>
+      <div class="card__body">
+        <div class="card__title">{{ phone.name }}</div>
+        <div class="card__meta">
+          <span class="stars">★★★★★</span>
+          <span>{{ phone.brand }}</span>
+        </div>
+        <div class="card__price">₹{{ phone.price }}</div>
+        <div class="card__actions">
+          <a class="button btn-primary" href="{{ phone.get_absolute_url }}">View</a>
+          <a class="button btn-secondary" href="{% url 'add_to_cart' phone.slug %}">Add to Cart</a>
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+
+  {% else %}
+  <div style="padding: 2rem; border-radius: 18px; background: white; box-shadow: 0 15px 25px rgba(0,0,0,0.06); margin-top: 1.5rem;">
+    <h3>No results found</h3>
+    <p style="color: var(--muted); margin: 0.75rem 0 1.25rem;">Try a different keyword or browse our categories.</p>
+    <a class="button btn-primary" href="{% url 'mobiles' %}">Browse Mobiles</a>
+  </div>
+  {% endif %}
+</section>
+
+{% endblock %}

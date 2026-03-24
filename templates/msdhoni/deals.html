@@ -1,0 +1,451 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="deals__banner">
+  <div class="container">
+    <div class="deals__banner-content">
+      <h1 class="deals__title">Today's Deals</h1>
+      <p class="deals__subtitle">Curated offers on top products. Shop smart, save more.</p>
+    </div>
+  </div>
+</section>
+
+<section class="deals__products">
+  <div class="container">
+    <div class="deals-toolbar">
+      <span class="deals-toolbar__label">Sort by:</span>
+      <a class="deals-sort-chip {% if current_sort == 'discount' %}is-active{% endif %}" href="?sort=discount">Highest Discount</a>
+      <a class="deals-sort-chip {% if current_sort == 'ending' %}is-active{% endif %}" href="?sort=ending">Ending Soon</a>
+    </div>
+
+    {% if deals %}
+      <div class="deals-shell">
+        <div class="deals-grid">
+          {% for deal in deals %}
+          <article class="deal-card">
+            <div class="deal-badge">{{ deal.discount_percent }}% OFF</div>
+            {% if forloop.first %}
+            <div class="best-deal-badge">🔥 Best Deal</div>
+            {% endif %}
+
+            <div class="deal-card__media">
+              <img src="{{ deal.product.image.url }}" alt="{{ deal.product.name }}">
+            </div>
+
+            <div class="deal-card__body">
+              <div class="deal-card__title">{{ deal.product.name }}</div>
+
+              <div class="deal-card__brand">{{ deal.product.brand }}</div>
+
+              <div class="stock-badge">Only {{ forloop.counter | add:5 }} left</div>
+
+              {% if deal.discount_percent > 15 %}
+              <div class="deal-card__hot">🔥 Hot Deal</div>
+              {% endif %}
+
+              <div class="deal-card__prices">
+                <span class="deal-card__discounted-price">₹{{ deal.discounted_price }}</span>
+                <span class="deal-card__original-price">₹{{ deal.original_price }}</span>
+              </div>
+
+              <div class="deal-card__urgency">⚡ Limited time deal — grab it fast!</div>
+
+              <div class="deal-card__savings">
+                You save ₹{{ deal.savings }}
+              </div>
+
+              <div class="deal-card__actions">
+                <button class="button deal-btn-primary button-add-to-cart" data-slug="{{ deal.product.slug }}" data-name="{{ deal.product.name }}" type="button">
+                  <svg viewBox="0 0 24 24" fill="currentColor" style="width: 18px; height: 18px;">
+                    <path d="M7 18a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm11 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM2.5 4h16.86l-1.59 8H5.5l1-5H2.5z"/>
+                  </svg>
+                  Add to Cart
+                </button>
+                <a class="button deal-btn-outline" href="{{ deal.product.get_absolute_url }}">
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" style="width: 16px; height: 16px;">
+                    <path d="M1.5 12s3.5-6 10.5-6 10.5 6 10.5 6-3.5 6-10.5 6S1.5 12 1.5 12z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/>
+                  </svg>
+                  View Details
+                </a>
+              </div>
+            </div>
+          </article>
+          {% endfor %}
+        </div>
+      </div>
+    {% else %}
+      <div class="no-deals">
+        <p>No deals available right now. Check back soon!</p>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  :root {
+    --deal-border: #e5e7eb;
+    --deal-muted: #6b7280;
+    --deal-title: #111827;
+    --deal-red: #dc2626;
+    --deal-green: #15803d;
+    --deal-primary: #2563eb;
+    --deal-surface: #ffffff;
+  }
+
+  .deals__banner {
+    background: linear-gradient(135deg, #eef2ff 0%, #f8fafc 55%, #fff7ed 100%);
+    padding: 2.35rem 0 1.9rem;
+    margin-bottom: 1.4rem;
+    border: 1px solid #fde3d3;
+    border-radius: 18px;
+  }
+
+  .deals__banner-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .deals__title {
+    font-size: clamp(2.15rem, 4.5vw, 2.95rem);
+    margin: 0;
+    color: var(--deal-title);
+    font-weight: 850;
+    letter-spacing: -0.02em;
+  }
+
+  .deals__subtitle {
+    font-size: 0.94rem;
+    color: #6b7280;
+    margin: 0;
+    max-width: 640px;
+  }
+
+  .deals__products {
+    margin-top: 0.9rem;
+    padding: 2rem 0 3.1rem;
+  }
+
+  .deals-toolbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-bottom: 1.15rem;
+  }
+
+  .deals-toolbar__label {
+    font-size: 0.86rem;
+    color: var(--deal-muted);
+    font-weight: 600;
+  }
+
+  .deals-sort-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.34rem 0.7rem;
+    border-radius: 999px;
+    border: 1px solid #d1d5db;
+    color: #374151;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    background: #ffffff;
+    transition: all 0.2s ease;
+  }
+
+  .deals-sort-chip:hover {
+    border-color: #93c5fd;
+    background: #f8fbff;
+    color: #1d4ed8;
+  }
+
+  .deals-sort-chip.is-active {
+    background: #2563eb;
+    border-color: #2563eb;
+    color: #ffffff;
+  }
+
+  .deals-shell {
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+
+  .deals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.9rem;
+  }
+
+  .deal-card {
+    position: relative;
+    background: var(--deal-surface);
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid var(--deal-border);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .deal-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 18px 34px rgba(15, 23, 42, 0.16);
+  }
+
+  .deal-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: linear-gradient(135deg, #f97316, #ef4444);
+    color: #fff;
+    padding: 0.32rem 0.62rem;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.71rem;
+    letter-spacing: 0.02em;
+    z-index: 10;
+    box-shadow: 0 7px 14px rgba(239, 68, 68, 0.25);
+  }
+
+  .best-deal-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: #fff1f2;
+    color: #be123c;
+    border: 1px solid #fecdd3;
+    padding: 0.28rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    z-index: 10;
+  }
+
+  .stock-badge {
+    display: inline-flex;
+    width: fit-content;
+    background: #ecfdf3;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.73rem;
+    font-weight: 600;
+  }
+
+  .deal-card__media {
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    background: linear-gradient(160deg, #f8fafc 0%, #f1f5f9 100%);
+    display: grid;
+    place-items: center;
+    padding: 1.35rem;
+    overflow: hidden;
+    border-bottom: 1px solid var(--deal-border);
+  }
+
+  .deal-card__media img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 10px;
+    transition: transform 0.25s ease;
+  }
+
+  .deal-card:hover .deal-card__media img {
+    transform: scale(1.05);
+  }
+
+  .deal-card__body {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    flex: 1;
+  }
+
+  .deal-card__title {
+    font-size: 1.18rem;
+    font-weight: 700;
+    color: var(--deal-title);
+    line-height: 1.3;
+    min-height: 2.6rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .deal-card__brand {
+    color: #9ca3af;
+    font-size: 0.84rem;
+    font-weight: 500;
+  }
+
+  .deal-card__hot {
+    color: #dc2626;
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-top: 0.1rem;
+  }
+
+  .deal-card__prices {
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    margin-top: 0.2rem;
+  }
+
+  .deal-card__original-price {
+    font-size: 0.88rem;
+    color: #9ca3af;
+    text-decoration: line-through;
+  }
+
+  .deal-card__discounted-price {
+    font-size: 1.55rem;
+    font-weight: 800;
+    color: var(--deal-red);
+  }
+
+  .deal-card__savings {
+    font-size: 0.78rem;
+    color: var(--deal-green);
+    font-weight: 500;
+  }
+
+  .deal-card__urgency {
+    font-size: 0.75rem;
+    color: #ea580c;
+    font-weight: 600;
+  }
+
+  .deal-card__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    margin-top: auto;
+    padding-top: 0.85rem;
+  }
+
+  .deal-card__actions .button {
+    width: 100%;
+    padding: 0.7rem 0.95rem;
+    border-radius: 8px;
+    transition: all 0.25s ease;
+    font-size: 0.9rem;
+    font-weight: 650;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    text-decoration: none;
+  }
+
+  .deal-btn-primary {
+    background: var(--deal-primary);
+    color: #fff;
+    border: 1px solid var(--deal-primary);
+  }
+
+  .deal-btn-primary:hover {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+    box-shadow: 0 8px 16px rgba(37, 99, 235, 0.22);
+  }
+
+  .deal-btn-outline {
+    background: #fff;
+    color: var(--deal-primary);
+    border: 1px solid var(--deal-primary);
+  }
+
+  .deal-btn-outline:hover {
+    background: #eff6ff;
+  }
+
+  .button-add-to-cart {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .button-add-to-cart:active {
+    transform: scale(0.98) !important;
+  }
+
+  .button-add-to-cart.clicked {
+    animation: addToCartPulse 0.6s ease-out;
+  }
+
+  @keyframes addToCartPulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .no-deals {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--deal-muted);
+    font-size: 1.1rem;
+  }
+
+  @media (max-width: 700px) {
+    .deals-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.9rem;
+    }
+
+    .deals__banner {
+      padding: 1.5rem 0 1.2rem;
+    }
+
+    .deals__title {
+      font-size: 1.75rem;
+    }
+
+    .deals-toolbar {
+      margin-bottom: 1rem;
+    }
+  }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const addToCartButtons = document.querySelectorAll('.button-add-to-cart');
+  
+  addToCartButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      const slug = this.dataset.slug;
+      const productName = this.dataset.name;
+      
+      // Add animation
+      this.classList.add('clicked');
+      setTimeout(() => this.classList.remove('clicked'), 600);
+      
+      // Call the global function from base.html
+      if (typeof addToCartWithFeedback === 'function') {
+        addToCartWithFeedback(slug, productName);
+      } else {
+        console.error('addToCartWithFeedback function not found');
+      }
+    });
+  });
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section style="margin-top: 1.5rem;">
+  <h2>Accessories</h2>
+  <div class="grid">
+    {% for accessory in accessories %}
+    <article class="card">
+      <div class="card__media">
+        <img src="{{ accessory.image.url }}" alt="{{ accessory.name }}">
+      </div>
+      <div class="card__body">
+        <div class="card__title">{{ accessory.name }}</div>
+        <div class="card__meta">
+          <span class="stars">★★★★★</span>
+          <span>{{ accessory.brand }}</span>
+        </div>
+        <div class="card__price">₹{{ accessory.price }}</div>
+        <div class="card__actions">
+          <a class="button btn-primary" href="{{ accessory.get_absolute_url }}">View</a>
+          <a class="button btn-secondary" href="{% url 'add_to_cart' accessory.slug %}">Add to Cart</a>
+        </div>
+      </div>
+    </article>
+    {% empty %}
+    <p>No accessories available yet. Add some products in the admin panel.</p>
+    {% endfor %}
+  </div>
+</section>
+
+{% endblock %}

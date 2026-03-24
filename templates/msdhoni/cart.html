@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section style="margin-top: 1.8rem;">
+  <h2>Your Cart</h2>
+
+  {% if items %}
+  <div style="display: grid; gap: 1.5rem; margin-top: 1.2rem;">
+    <div style="display: grid; gap: 1.2rem;">
+      {% for item in items %}
+      <div style="display: grid; grid-template-columns: 100px 1fr auto; gap: 1rem; padding: 1rem; border: 1px solid rgba(15,23,42,0.06); border-radius: 16px; background: white; align-items: center;">
+        <img src="{{ item.phone.image.url }}" alt="{{ item.phone.name }}" style="width: 100px; height: 100px; object-fit: contain; border-radius: 12px;" />
+        <div>
+          <div style="font-weight: 700; margin-bottom: 0.35rem;">{{ item.phone.name }}</div>
+          <div style="color: var(--muted); margin-bottom: 0.5rem;">{{ item.phone.brand }}</div>
+          <div style="font-weight: 700;">₹{{ item.phone.price }} × {{ item.quantity }} = ₹{{ item.subtotal }}</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 0.6rem; align-items: flex-end;">
+          <form method="post" action="{% url 'update_cart' %}" style="display: grid; grid-template-columns: auto auto; gap: 0.4rem; align-items: center;">
+            {% csrf_token %}
+            <input type="hidden" name="slug" value="{{ item.phone.slug }}">
+            <input type="number" name="quantity" value="{{ item.quantity }}" min="0" style="width: 4.5rem; padding: 0.35rem; border-radius: 10px; border: 1px solid rgba(15,23,42,0.2); text-align: center;" />
+            <button class="button btn-secondary" type="submit" style="font-size: 0.9rem; padding: 0.45rem 0.8rem;">Update</button>
+          </form>
+          <a class="button btn-secondary" href="{% url 'remove_from_cart' item.phone.slug %}">Remove</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div style="background: white; border-radius: 18px; padding: 1.5rem; box-shadow: 0 15px 25px rgba(0,0,0,0.08);">
+      <div style="display: flex; justify-content: space-between; margin-bottom: 0.7rem; font-weight: 700;">Subtotal</div>
+      <div style="display: flex; justify-content: space-between; margin-bottom: 1.2rem;">
+        <span style="color: var(--muted);">Total</span>
+        <span style="font-weight: 900; font-size: 1.4rem;">₹{{ total }}</span>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
+        <a class="button btn-secondary" href="{% url 'clear_cart' %}">Empty cart</a>
+        <a class="button btn-primary" href="{% url 'checkout' %}">Proceed to checkout</a>
+      </div>
+    </div>
+  </div>
+
+  {% else %}
+  <div style="padding: 2rem; border-radius: 18px; background: white; box-shadow: 0 16px 24px rgba(0,0,0,0.06);">
+    <h3>Your cart is empty</h3>
+    <p style="color: var(--muted); margin: 0.75rem 0 1.25rem;">Add products to your cart and they’ll show up here.</p>
+    <a class="button btn-primary" href="{% url 'mobiles' %}">Shop Mobiles</a>
+  </div>
+  {% endif %}
+</section>
+
+{% endblock %}

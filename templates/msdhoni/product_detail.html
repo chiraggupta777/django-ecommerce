@@ -1,0 +1,294 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="product-page">
+  <div class="container">
+    <div class="product-layout">
+      <div class="product-gallery-card">
+        <div class="product-gallery">
+          <img src="{{ phone.image.url }}" alt="{{ phone.name }}" class="product-image" />
+        </div>
+      </div>
+
+      <div class="product-info-card">
+        <div class="product-head">
+          <h1 class="product-title">{{ phone.name }}</h1>
+          <div class="product-meta">
+            <span class="product-brand">{{ phone.brand }}</span>
+            <span class="product-category">{{ phone.category|title }}</span>
+          </div>
+        </div>
+
+        <div class="price-card">
+          {% if has_discount %}
+            <div class="price-row">
+              <span class="discounted-price">₹{{ discounted_price }}</span>
+              <span class="original-price">₹{{ original_price }}</span>
+              <span class="discount-badge">{{ phone.discount_percent }}% OFF</span>
+            </div>
+            <div class="savings-text">You save ₹{{ savings }}</div>
+          {% else %}
+            <div class="price-row">
+              <span class="discounted-price">₹{{ phone.price }}</span>
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="urgency-wrap">
+          <span class="stock-pill">Only {{ stock_left }} left in stock</span>
+          {% if phone.discount_percent > 15 %}
+            <span class="hot-deal-pill">🔥 Hot Deal</span>
+          {% endif %}
+        </div>
+
+        <div class="product-actions">
+          <a class="button cta-primary" href="{% url 'add_to_cart' phone.slug %}">Add to Cart</a>
+          <a class="button cta-outline" href="{% url 'cart' %}">Buy Now</a>
+        </div>
+
+        <div class="trust-signals">
+          <div class="trust-item">🚚 Free Delivery</div>
+          <div class="trust-item">↩️ Easy Returns</div>
+          <div class="trust-item">🔒 Secure Payment</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-description-card">
+      <h3>Description</h3>
+      <p>{{ phone.description }}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .product-page {
+    margin-top: 1.8rem;
+    margin-bottom: 2.2rem;
+  }
+
+  .product-layout {
+    display: grid;
+    grid-template-columns: minmax(300px, 1fr) minmax(340px, 1fr);
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .product-gallery-card,
+  .product-info-card,
+  .product-description-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+  }
+
+  .product-gallery {
+    padding: 1.6rem;
+    display: grid;
+    place-items: center;
+    min-height: 460px;
+    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+    border-radius: 18px;
+  }
+
+  .product-image {
+    width: 100%;
+    max-height: 420px;
+    object-fit: contain;
+  }
+
+  .product-info-card {
+    padding: 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .product-title {
+    margin: 0;
+    font-size: clamp(1.6rem, 2.5vw, 2rem);
+    font-weight: 800;
+    color: #111827;
+    line-height: 1.25;
+  }
+
+  .product-meta {
+    margin-top: 0.4rem;
+    display: flex;
+    gap: 0.65rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .product-brand {
+    color: #6b7280;
+    font-size: 0.92rem;
+    font-weight: 600;
+  }
+
+  .product-category {
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    background: #eff6ff;
+    color: #1d4ed8;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .price-card {
+    padding: 1rem;
+    border-radius: 14px;
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+  }
+
+  .price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+  }
+
+  .discounted-price {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #b91c1c;
+  }
+
+  .original-price {
+    font-size: 1rem;
+    color: #9ca3af;
+    text-decoration: line-through;
+  }
+
+  .discount-badge {
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #f97316, #ef4444);
+    color: #fff;
+    font-size: 0.74rem;
+    font-weight: 700;
+  }
+
+  .savings-text {
+    margin-top: 0.4rem;
+    color: #15803d;
+    font-size: 0.84rem;
+    font-weight: 600;
+  }
+
+  .urgency-wrap {
+    display: flex;
+    gap: 0.55rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .stock-pill {
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    color: #c2410c;
+    padding: 0.3rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+
+  .hot-deal-pill {
+    color: #dc2626;
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  .product-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    margin-top: 0.2rem;
+  }
+
+  .product-actions .button {
+    width: 100%;
+    text-align: center;
+    font-weight: 700;
+    padding: 0.8rem 1rem;
+    border-radius: 10px;
+    font-size: 0.95rem;
+  }
+
+  .cta-primary {
+    background: #2563eb;
+    color: #ffffff;
+    border: 1px solid #2563eb;
+  }
+
+  .cta-primary:hover {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+  }
+
+  .cta-outline {
+    background: #ffffff;
+    color: #2563eb;
+    border: 1px solid #2563eb;
+  }
+
+  .cta-outline:hover {
+    background: #eff6ff;
+  }
+
+  .trust-signals {
+    margin-top: 0.4rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.55rem;
+  }
+
+  .trust-item {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 0.55rem 0.6rem;
+    font-size: 0.78rem;
+    color: #374151;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .product-description-card {
+    margin-top: 1.5rem;
+    padding: 1.2rem 1.3rem;
+  }
+
+  .product-description-card h3 {
+    margin: 0 0 0.65rem;
+    color: #111827;
+    font-size: 1.05rem;
+  }
+
+  .product-description-card p {
+    margin: 0;
+    color: #4b5563;
+    line-height: 1.7;
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 900px) {
+    .product-layout {
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+    }
+
+    .product-gallery {
+      min-height: 340px;
+    }
+
+    .trust-signals {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+{% endblock %}

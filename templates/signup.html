@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="auth-page">
+  <div class="auth-card">
+    <h1>Create Account</h1>
+    <p>Join now and start shopping with personalized offers.</p>
+
+    <form method="post" class="auth-form">
+      {% csrf_token %}
+
+      <label for="id_username">Username</label>
+      <input id="id_username" name="username" type="text" value="{{ username|default:'' }}" required>
+
+      <label for="id_email">Email</label>
+      <input id="id_email" name="email" type="email" value="{{ email|default:'' }}">
+
+      <label for="id_password">Password</label>
+      <input id="id_password" name="password" type="password" required>
+
+      {% if error %}
+      <p class="auth-error">{{ error }}</p>
+      {% endif %}
+
+      <button class="button auth-submit" type="submit">Sign Up</button>
+    </form>
+
+    <p class="auth-switch">Already have an account? <a href="{% url 'login' %}">Login</a></p>
+  </div>
+</section>
+
+<style>
+  .auth-page {
+    min-height: calc(100vh - 280px);
+    display: grid;
+    place-items: center;
+    padding: 2rem 0;
+  }
+
+  .auth-card {
+    width: min(100%, 430px);
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    box-shadow: 0 16px 34px rgba(15, 23, 42, 0.08);
+    padding: 1.5rem;
+  }
+
+  .auth-card h1 {
+    margin: 0;
+    font-size: 1.6rem;
+    color: #111827;
+  }
+
+  .auth-card p {
+    margin: 0.35rem 0 1.1rem;
+    color: #6b7280;
+    font-size: 0.92rem;
+  }
+
+  .auth-form {
+    display: grid;
+    gap: 0.55rem;
+  }
+
+  .auth-form label {
+    font-size: 0.85rem;
+    color: #374151;
+    font-weight: 600;
+  }
+
+  .auth-form input {
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    padding: 0.65rem 0.75rem;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .auth-form input:focus {
+    border-color: #60a5fa;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.14);
+  }
+
+  .auth-submit {
+    margin-top: 0.45rem;
+    background: #2563eb;
+    color: #fff;
+    border: 1px solid #2563eb;
+    border-radius: 10px;
+    padding: 0.68rem 1rem;
+    font-weight: 700;
+  }
+
+  .auth-submit:hover {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+  }
+
+  .auth-error {
+    margin: 0.2rem 0 0;
+    color: #dc2626 !important;
+    font-size: 0.86rem !important;
+    font-weight: 600;
+  }
+
+  .auth-switch {
+    margin: 0.9rem 0 0 !important;
+    font-size: 0.88rem !important;
+  }
+
+  .auth-switch a {
+    color: #1d4ed8;
+    font-weight: 700;
+  }
+</style>
+{% endblock %}

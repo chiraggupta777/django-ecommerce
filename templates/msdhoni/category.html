@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="category-page">
+  <div class="container">
+    <div class="category-header">
+      <h1>{{ category_name }}</h1>
+      <p>Browse all products in {{ category_name|lower }}.</p>
+    </div>
+
+    <div class="grid category-grid">
+      {% for product in products %}
+      <article class="card category-card-item">
+        <div class="card__media">
+          <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        </div>
+        <div class="card__body">
+          <div class="card__title">{{ product.name }}</div>
+          <div class="card__meta">
+            <span class="stars">★ ★ ★ ★ ★</span>
+            <span class="category-brand">{{ product.brand }}</span>
+          </div>
+          <div class="card__price">₹{{ product.price }}</div>
+          <div class="card__actions">
+            <a class="button category-btn category-btn-outline" href="{{ product.get_absolute_url }}">View Details</a>
+            <a class="button category-btn category-btn-primary" href="{% url 'add_to_cart' product.slug %}">Add to Cart</a>
+          </div>
+        </div>
+      </article>
+      {% empty %}
+      <p class="category-empty">No products found in this category yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .category-page {
+    margin-top: 1.8rem;
+    margin-bottom: 2.4rem;
+  }
+
+  .category-header {
+    margin-bottom: 1.2rem;
+  }
+
+  .category-header h1 {
+    margin: 0;
+    font-size: clamp(1.6rem, 2.8vw, 2rem);
+    color: #111827;
+    font-weight: 800;
+  }
+
+  .category-header p {
+    margin: 0.35rem 0 0;
+    color: #6b7280;
+    font-size: 0.95rem;
+  }
+
+  .category-grid {
+    gap: 1.2rem;
+  }
+
+  .category-card-item {
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .category-card-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 28px rgba(15, 23, 42, 0.12);
+  }
+
+  .category-brand {
+    color: #6b7280;
+  }
+
+  .category-btn {
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    padding: 0.62rem 0.85rem;
+    text-decoration: none;
+  }
+
+  .category-btn-primary {
+    background: #2563eb;
+    color: #fff;
+    border: 1px solid #2563eb;
+  }
+
+  .category-btn-primary:hover {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+  }
+
+  .category-btn-outline {
+    background: #fff;
+    color: #2563eb;
+    border: 1px solid #2563eb;
+  }
+
+  .category-btn-outline:hover {
+    background: #eff6ff;
+  }
+
+  .category-empty {
+    color: #6b7280;
+  }
+</style>
+
+{% endblock %}

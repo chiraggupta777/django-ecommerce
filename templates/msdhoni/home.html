@@ -1,0 +1,661 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="hero">
+  <div class="hero__content">
+    <div class="hero__badge">🔥 Trusted by 1000+ users</div>
+    <h1>Upgrade Your Tech. Live Smarter.</h1>
+    <p>Discover top smartphones, trusted brands, and unbeatable offers with fast delivery and reliable support.</p>
+
+    <div class="hero__buttons">
+      <a class="button home-btn home-btn-primary" href="{% url 'mobiles' %}">Shop Now</a>
+      <a class="button home-btn home-btn-outline" href="{% url 'deals' %}">Explore Deals</a>
+    </div>
+  </div>
+</section>
+
+<section class="home-section trust-strip">
+  <div class="container home-shell trust-strip__inner">
+    <div class="trust-strip__item">⭐ 4.8/5 average rating</div>
+    <div class="trust-strip__item">🚚 5000+ deliveries completed</div>
+  </div>
+</section>
+
+<section class="home-section flash-deals">
+  <div class="container home-shell">
+    <div class="flash-deals__head">
+      <h2 class="section-title">⚡ Flash Deals</h2>
+      <div class="flash-deals__controls">
+        <button class="flash-scroll-btn" type="button" data-target="flashDealsTrack" data-direction="left" aria-label="Scroll left">‹</button>
+        <button class="flash-scroll-btn" type="button" data-target="flashDealsTrack" data-direction="right" aria-label="Scroll right">›</button>
+      </div>
+    </div>
+
+    <div class="flash-deals__track" id="flashDealsTrack">
+      {% for phone in phones|slice:":6" %}
+      <a class="flash-deal-card" href="{{ phone.get_absolute_url }}">
+        <div class="flash-deal-card__media">
+          <img src="{{ phone.image.url }}" alt="{{ phone.name }}">
+        </div>
+        <div class="flash-deal-card__body">
+          <div class="flash-deal-card__discount">
+            {% if phone.discount_percent > 0 %}
+              {{ phone.discount_percent }}% OFF
+            {% else %}
+              Deal
+            {% endif %}
+          </div>
+          <div class="flash-deal-card__price">₹{{ phone.price }}</div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="home-section categories">
+  <div class="container home-shell">
+    <h2 class="section-title">Shop by Category</h2>
+    <div class="categories__inner">
+    <a class="category-card" href="{% url 'category_products' 'mobile' %}">
+      <div class="category-card__icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm5 19a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm5-4H7V5h10v12z"/></svg>
+      </div>
+      <div class="category-card__title">Mobiles</div>
+    </a>
+
+    <a class="category-card" href="{% url 'category_products' 'earbuds' %}">
+      <div class="category-card__icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.5A6.5 6.5 0 0 1 18.5 10H17a5 5 0 1 0-10 0H5.5A6.5 6.5 0 0 1 12 3.5z"/><path d="M5.5 13h13a.5.5 0 0 1 .5.5v.5a3.5 3.5 0 0 1-3.5 3.5H8.5A3.5 3.5 0 0 1 5 14v-.5a.5.5 0 0 1 .5-.5z"/></svg>
+      </div>
+      <div class="category-card__title">Earbuds</div>
+    </a>
+
+    <a class="category-card" href="{% url 'category_products' 'charger' %}">
+      <div class="category-card__icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 17h10v2H7z"/><path d="M5 3h14v10H5z" opacity=".3"/><path d="M19 1H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm0 16H5V3h14v14z"/></svg>
+      </div>
+      <div class="category-card__title">Chargers</div>
+    </a>
+
+    <a class="category-card" href="{% url 'category_products' 'accessory' %}">
+      <div class="category-card__icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 2h12a2 2 0 0 1 2 2v17h-2V4H6v17H4V4a2 2 0 0 1 2-2z"/><path d="M12 6a4 4 0 0 1 4 4c0 1.58-.94 2.94-2.28 3.62l.86 2.18-1.8.72-.86-2.18A4 4 0 1 1 12 6z"/></svg>
+      </div>
+      <div class="category-card__title">Accessories</div>
+    </a>
+  </div>
+  </div>
+</section>
+
+<section class="home-section mini-deals-banner-wrap">
+  <div class="container home-shell">
+    <div class="mini-deals-banner">
+      <div>
+        <h3>⚡ Daily Deals Available — Save Big Today</h3>
+      </div>
+      <a class="button home-btn home-btn-primary" href="{% url 'deals' %}">Explore Deals</a>
+    </div>
+  </div>
+</section>
+
+<section class="home-section features">
+  <div class="container home-shell">
+    <h2 class="section-title">Why Shop With Us</h2>
+    <div class="features__inner">
+    <div class="feature-card">
+      <div class="feature-card__icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="feature-card__title">Free Delivery</div>
+      <div class="feature-card__text">Fast, tracked shipping on all orders.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-card__icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3z"/><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><path d="M5 8V7a7 7 0 0 1 14 0v1"/></svg>
+      </div>
+      <div class="feature-card__title">Secure Payment</div>
+      <div class="feature-card__text">Encrypted checkout for peace of mind.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-card__icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 12a9 9 0 1 1-9-9" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="feature-card__title">Easy Returns</div>
+      <div class="feature-card__text">Hassle-free returns within 30 days.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-card__icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 6H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2z"/><path d="M16 10a4 4 0 0 1-8 0" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M12 14v2" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="feature-card__title">Genuine Products</div>
+      <div class="feature-card__text">Verified brands and authentic quality.</div>
+    </div>
+  </div>
+  </div>
+</section>
+
+<section class="home-section products">
+  <div class="container home-shell">
+    <h2 class="section-title">🔥 Popular Right Now</h2>
+    <div class="grid home-products-grid">
+      {% for phone in phones %}
+      <article class="card home-product-card {% if forloop.first %}home-product-card--featured{% endif %}">
+        {% if forloop.counter <= 2 %}
+        <div class="trending-badge">{% if forloop.first %}🔥 Editor's Choice{% else %}Trending{% endif %}</div>
+        {% endif %}
+        <div class="card__media">
+          <img src="{{ phone.image.url }}" alt="{{ phone.name }}">
+        </div>
+
+        <div class="card__body">
+          <div class="card__title">{{ phone.name }}</div>
+          <div class="card__meta">
+            <span class="stars" aria-label="4.5 stars">★ ★ ★ ★ ★</span>
+            <span class="card__meta-brand">{{ phone.brand }}</span>
+          </div>
+
+          <div class="card__price">₹{{ phone.price }}</div>
+
+          <div class="card__actions">
+            <a class="button home-btn home-btn-primary" href="{% url 'add_to_cart' phone.slug %}">Add to cart</a>
+            <a class="button home-btn home-btn-outline-dark" href="{{ phone.get_absolute_url }}">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" style="width: 16px; height: 16px;">
+                <path d="M1.5 12s3.5-6 10.5-6 10.5 6 10.5 6-3.5 6-10.5 6S1.5 12 1.5 12z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/>
+              </svg>
+              View details
+            </a>
+          </div>
+        </div>
+      </article>
+      {% empty %}
+      <p>No products are available yet. Add some in the admin panel to see them here.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .home-section {
+    margin-top: 3rem;
+  }
+
+  .home-shell {
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+
+  .section-title {
+    margin: 0 0 1.1rem;
+    font-size: clamp(1.35rem, 2.8vw, 1.8rem);
+    color: #111827;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+
+  .hero {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    min-height: 440px;
+    display: grid;
+    align-items: center;
+    margin-top: 0.9rem;
+    isolation: isolate;
+    background-position: center;
+    background-size: cover;
+    animation: heroBgFloat 16s ease-in-out infinite alternate;
+  }
+
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset: -8px;
+    background: inherit;
+    filter: blur(4px);
+    transform: scale(1.06);
+    z-index: 0;
+  }
+
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, rgba(15, 23, 42, 0.82) 0%, rgba(30, 58, 138, 0.56) 48%, rgba(15, 23, 42, 0.18) 100%);
+    z-index: 1;
+  }
+
+  .hero__content {
+    position: relative;
+    z-index: 2;
+    max-width: 660px;
+    padding: 3rem 2.6rem;
+    animation: heroFadeIn 0.55s ease-out;
+  }
+
+  .hero__badge {
+    width: fit-content;
+    margin-bottom: 0.8rem;
+    padding: 0.28rem 0.68rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.14);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+
+  .hero__content h1 {
+    margin: 0 0 0.8rem;
+    color: #ffffff;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 900;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    animation: heroTextUp 0.6s ease-out;
+  }
+
+  .hero__content p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    line-height: 1.65;
+    max-width: 560px;
+    animation: heroTextUp 0.75s ease-out;
+  }
+
+  .hero__buttons {
+    margin-top: 1.35rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+  }
+
+  .home-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    padding: 0.75rem 1.05rem;
+    font-size: 0.92rem;
+    font-weight: 700;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    border: 1px solid transparent;
+  }
+
+  .home-btn-primary {
+    background: #2563eb;
+    color: #ffffff;
+    border-color: #2563eb;
+  }
+
+  .home-btn-primary:hover {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(37, 99, 235, 0.25);
+  }
+
+  .home-btn-outline {
+    background: rgba(255, 255, 255, 0.14);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.6);
+  }
+
+  .home-btn-outline:hover {
+    background: rgba(255, 255, 255, 0.22);
+    transform: translateY(-2px);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.16);
+  }
+
+  .home-btn-outline-dark {
+    background: #ffffff;
+    color: #1d4ed8;
+    border-color: #2563eb;
+    gap: 0.35rem;
+  }
+
+  .home-btn-outline-dark:hover {
+    background: #eff6ff;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 18px rgba(37, 99, 235, 0.14);
+  }
+
+  .trust-strip {
+    margin-top: 1.1rem;
+  }
+
+  .trust-strip__inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+  }
+
+  .trust-strip__item {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 999px;
+    padding: 0.42rem 0.75rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #374151;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+  }
+
+  .flash-deals {
+    background: #f8fafc;
+    border-radius: 16px;
+    padding: 1.1rem 0;
+    margin-top: 1.2rem;
+  }
+
+  .flash-deals__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .flash-deals__controls {
+    display: inline-flex;
+    gap: 0.4rem;
+  }
+
+  .flash-scroll-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 999px;
+    border: 1px solid #d1d5db;
+    background: #ffffff;
+    color: #1f2937;
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .flash-scroll-btn:hover {
+    background: #eff6ff;
+    border-color: #93c5fd;
+    color: #1d4ed8;
+  }
+
+  .flash-deals__track {
+    display: flex;
+    gap: 0.8rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding-bottom: 0.2rem;
+  }
+
+  .flash-deals__track::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .flash-deals__track::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 999px;
+  }
+
+  .flash-deal-card {
+    min-width: 170px;
+    max-width: 170px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    box-shadow: 0 5px 14px rgba(15, 23, 42, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .flash-deal-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 22px rgba(15, 23, 42, 0.12);
+  }
+
+  .flash-deal-card__media {
+    height: 120px;
+    background: #f8fafc;
+    display: grid;
+    place-items: center;
+    padding: 0.65rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .flash-deal-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .flash-deal-card__body {
+    padding: 0.6rem 0.65rem;
+  }
+
+  .flash-deal-card__discount {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #dc2626;
+    margin-bottom: 0.2rem;
+  }
+
+  .flash-deal-card__price {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #111827;
+  }
+
+  .categories__inner {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+  }
+
+  .categories {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 1.2rem 0 0.2rem;
+  }
+
+  .category-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+    cursor: pointer;
+  }
+
+  .category-card__icon {
+    width: 54px;
+    height: 54px;
+    margin: 0 auto 0.5rem;
+    color: #2563eb;
+  }
+
+  .category-card:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 16px 30px rgba(15, 23, 42, 0.16);
+    background: #f8fbff;
+    border-color: #93c5fd;
+  }
+
+  .mini-deals-banner-wrap {
+    margin-top: 2rem;
+  }
+
+  .mini-deals-banner {
+    background: linear-gradient(135deg, #fb923c 0%, #f97316 45%, #ef4444 100%);
+    border-radius: 16px;
+    padding: 1rem 1.1rem;
+    color: #ffffff;
+    box-shadow: 0 12px 26px rgba(239, 68, 68, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+  }
+
+  .mini-deals-banner h3 {
+    margin: 0;
+    font-size: clamp(1.05rem, 2.2vw, 1.28rem);
+  }
+
+  .features__inner {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.1rem;
+  }
+
+  .features {
+    background: #f8fafc;
+    border-radius: 16px;
+    padding: 1.2rem 0;
+  }
+
+  .feature-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 1rem;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
+  }
+
+  .home-products-grid {
+    gap: 1.3rem;
+  }
+
+  .products {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 1.2rem 0;
+  }
+
+  .home-product-card {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .home-product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 18px 34px rgba(15, 23, 42, 0.14);
+  }
+
+  .home-product-card--featured {
+    border: 1px solid #93c5fd;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08), 0 12px 26px rgba(15, 23, 42, 0.1);
+    background: linear-gradient(#ffffff, #ffffff) padding-box, linear-gradient(135deg, #93c5fd, #f97316) border-box;
+    border: 1px solid transparent;
+  }
+
+  .home-product-card .card__media img {
+    transition: transform 0.2s ease;
+  }
+
+  .home-product-card:hover .card__media img {
+    transform: scale(1.05);
+  }
+
+  .trending-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 5;
+    background: linear-gradient(135deg, #f97316, #ef4444);
+    color: #ffffff;
+    border-radius: 999px;
+    padding: 0.28rem 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+
+  @keyframes heroFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes heroBgFloat {
+    0% {
+      background-position: center;
+    }
+    100% {
+      background-position: 54% center;
+    }
+  }
+
+  @keyframes heroTextUp {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 780px) {
+    .hero {
+      min-height: 360px;
+    }
+
+    .hero__content {
+      padding: 1.5rem;
+    }
+
+    .mini-deals-banner {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .flash-deal-card {
+      min-width: 150px;
+      max-width: 150px;
+    }
+  }
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const scrollButtons = document.querySelectorAll(".flash-scroll-btn");
+
+  scrollButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+      const targetId = this.dataset.target;
+      const direction = this.dataset.direction;
+      const track = document.getElementById(targetId);
+      if (!track) return;
+
+      const amount = direction === "left" ? -260 : 260;
+      track.scrollBy({ left: amount, behavior: "smooth" });
+    });
+  });
+});
+</script>
+
+{% endblock %}

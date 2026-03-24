@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section style="margin-top: 1.5rem;">
+  <h2>All Mobiles</h2>
+  <div class="grid">
+    {% for phone in phones %}
+    <article class="card">
+      <div class="card__media">
+        <img src="{{ phone.image.url }}" alt="{{ phone.name }}">
+      </div>
+      <div class="card__body">
+        <div class="card__title">{{ phone.name }}</div>
+        <div class="card__meta">
+          <span class="stars">★★★★★</span>
+          <span>{{ phone.brand }}</span>
+        </div>
+        <div class="card__price">₹{{ phone.price }}</div>
+        <div class="card__actions">
+          <a class="button btn-primary" href="{{ phone.get_absolute_url }}">View</a>
+          <a class="button btn-secondary" href="{% url 'add_to_cart' phone.slug %}">Add to Cart</a>
+        </div>
+      </div>
+    </article>
+    {% empty %}
+    <p>No mobiles found yet. Add products via the admin panel.</p>
+    {% endfor %}
+  </div>
+</section>
+
+{% endblock %}

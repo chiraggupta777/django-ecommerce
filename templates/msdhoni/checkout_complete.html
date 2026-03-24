@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section style="margin-top: 2rem;">
+  <h2>Order placed successfully 🎉</h2>
+
+  {% if order %}
+  <div style="margin-top: 1.5rem; display: grid; gap: 1.5rem;">
+    <div style="background: white; border-radius: 18px; padding: 1.5rem; box-shadow: 0 16px 24px rgba(0,0,0,0.06);">
+      <h3 style="margin-bottom: 1rem;">Thank you, {{ request.user.username }}!</h3>
+      <p style="color: var(--muted);">We received your order <strong>#{{ order.id }}</strong> and started processing it.</p>
+      <p style="color: var(--muted); margin-top: 0.75rem;">We’ll start preparing your items right away.</p>
+    </div>
+
+    <div style="background: white; border-radius: 18px; padding: 1.5rem; box-shadow: 0 16px 24px rgba(0,0,0,0.06);">
+      <h3 style="margin-bottom: 1rem;">Order details</h3>
+      <div style="display: grid; gap: 0.75rem;">
+        <div><strong>Order #</strong> {{ order.id }}</div>
+        <div><strong>Placed on</strong> {{ order.created_at|date:"M d, Y H:i" }}</div>
+        <div><strong>Total</strong> ₹{{ order.total_price }}</div>
+        <div><strong>Status</strong> {{ order.get_status_display }}</div>
+        <div><strong>Shipping to</strong> {{ order.address }}</div>
+      </div>
+
+      <div style="margin-top: 1.25rem;">
+        <h4 style="margin-bottom: 0.75rem;">Items</h4>
+        {% for item in order.items.all %}
+        <div style="display: grid; grid-template-columns: 1fr auto; gap: 0.5rem; padding: 0.75rem 0; border-bottom: 1px solid rgba(15,23,42,0.06);">
+          <div>
+            <div style="font-weight: 700;">{{ item.product.name }}</div>
+            <div style="color: var(--muted); font-size: 0.9rem;">Qty: {{ item.quantity }}</div>
+          </div>
+          <div style="font-weight: 700;">₹{{ item.price|floatformat:0 }}</div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div style="display: flex; gap: 0.7rem; margin-top: 1.5rem; flex-wrap: wrap;">
+        <a class="button btn-secondary" href="{% url 'order_detail' order.id %}">View order details</a>
+        <a class="button btn-primary" href="{% url 'home' %}">Continue shopping</a>
+      </div>
+    </div>
+  </div>
+
+  {% else %}
+  <div style="padding: 2rem; border-radius: 18px; background: white; box-shadow: 0 16px 24px rgba(0,0,0,0.06);">
+    <h3>Order not found</h3>
+    <p style="color: var(--muted); margin: 0.75rem 0 1.25rem;">Looks like there isn't an order to show right now. Try placing a new order.</p>
+    <a class="button btn-primary" href="{% url 'home' %}">Go shopping</a>
+  </div>
+  {% endif %}
+</section>
+
+{% endblock %}
